@@ -1,0 +1,36 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:BingoOnline.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		xmlns:local="using:BingoOnline.Views"
+        x:Class="BingoOnline.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Bionicle Bingo Online">
+
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="250"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<StackPanel Spacing="10" Margin="0,15,0,0">
+			<TextBox Watermark="Username"/>
+			<TextBox Watermark="Key"/>
+			<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
+
+				<Button Content="Connect"/>
+				<Button Content="Popout Board"/>
+			</StackPanel>
+
+		</StackPanel>
+
+
+		<local:BingoFieldView  Grid.Column="1" DataContext="{Binding BingoField}"/>
+	</Grid>
+
+</Window>
