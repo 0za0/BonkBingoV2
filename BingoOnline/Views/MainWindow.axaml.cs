@@ -23,6 +23,7 @@ namespace BingoOnline.Views
             this.WhenActivated(d =>
             {
                 d(ViewModel!.ShowAboutDialog.RegisterHandler(DoShowAboutDialogAsync));
+                d(ViewModel!.ShowSettingsDialog.RegisterHandler(DoShowSettingsDialogAsync));
                 d(this.BindValidation(ViewModel, x => x.UserNameText, x => x.UserNameValidation.Text));
             });
 
@@ -30,6 +31,14 @@ namespace BingoOnline.Views
         }
 
 
+        private async Task DoShowSettingsDialogAsync(InteractionContext<SettingsViewModel, Unit?> interaction)
+        {
+            var dialog = new SettingsWindow();
+            dialog.DataContext = interaction.Input;
+
+            var result = await dialog.ShowDialog<Unit>(this);
+            interaction.SetOutput(result);
+        }
 
         private async Task DoShowAboutDialogAsync(InteractionContext<AboutViewModel, Unit?> interaction)
         {

@@ -6,7 +6,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 		xmlns:local="using:BingoOnline.Views"
         x:Class="BingoOnline.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/scream_D7W_icon.ico"
         Title="Bionicle Bingo Online">
 
 	<Design.DataContext>
@@ -16,7 +16,7 @@
 		<Menu DockPanel.Dock="Top">
 			<MenuItem Header="_About" Command="{Binding AboutCommand}">
 			</MenuItem>
-			<MenuItem Header="_Settings">
+			<MenuItem Header="_Settings" Command="{Binding SettingsCommand}">
 			</MenuItem>
 		</Menu>
 		<Grid>
@@ -27,9 +27,7 @@
 
 			<StackPanel Spacing="10" Margin="0,15,0,0">
 				<TextBox x:Name="UsernameTextBox" Text="{Binding UserNameText}"  Watermark="Username"/>
-				<TextBlock x:Name="UserNameValidation"
-				  Foreground="Red"
-				  FontSize="13" />
+				<TextBlock x:Name="UserNameValidation" Foreground="Red" FontSize="13" Margin="5,0,0,0"/>
 				<MaskedTextBox HidePromptOnLeave="True" PromptChar="X" Mask="AAAA-AAAA-AAAA-AAAA" Watermark="Key"/>
 				<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
 

@@ -6,6 +6,7 @@
 		Width="500" Height="500"
         x:Class="BingoOnline.Views.PopoutBoardWindow"
         xmlns:local="using:BingoOnline.Views"
-		Title="PopoutBoardWindow">
+		Title="PopoutBoardWindow"
+		Icon="/Assets/scream_D7W_icon.ico">
 	<local:BingoFieldView/>
 </Window>

@@ -18,7 +18,6 @@ namespace BingoOnline.ViewModels
     {
 
         #region Properties and Fields
-        //
         private string _userNameText = "";
         public string UserNameText
         {
@@ -26,12 +25,17 @@ namespace BingoOnline.ViewModels
             set => this.RaiseAndSetIfChanged(ref _userNameText, value);
         }
 
-        //ViewModel Things
+        //Additional ViewModels
         public BingoFieldViewModel BingoField { get; set; }
+
+        //Commands
         public ICommand AboutCommand { get; }
+        public ICommand SettingsCommand { get; }
         public ICommand ConnectCommand { get; }
         public ICommand PopoutBoardCommand { get; }
 
+
+        //ReactiveUI Stuff
         public Interaction<AboutViewModel, Unit?> ShowAboutDialog { get; }
         public Interaction<SettingsViewModel, Unit?> ShowSettingsDialog { get; }
         public ValidationContext ValidationContext { get; } = new ValidationContext();
@@ -57,6 +61,12 @@ namespace BingoOnline.ViewModels
                 Debug.WriteLine("About Menu Pressed :)");
                 var about = new AboutViewModel();
                 await ShowAboutDialog.Handle(about);
+            });
+            SettingsCommand = ReactiveCommand.Create(async () =>
+            {
+                Debug.WriteLine("Settings Menu Opened");
+                var settings = new SettingsViewModel();
+                await ShowSettingsDialog.Handle(settings);
             });
             PopoutBoardCommand = ReactiveCommand.Create(() =>
             {
