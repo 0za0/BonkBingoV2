@@ -12,25 +12,35 @@
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="250"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
+	<DockPanel>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="_About" Command="{Binding AboutCommand}">
+			</MenuItem>
+			<MenuItem Header="_Settings">
+			</MenuItem>
+		</Menu>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="250"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
 
-		<StackPanel Spacing="10" Margin="0,15,0,0">
-			<TextBox Watermark="Username"/>
-			<TextBox Watermark="Key"/>
-			<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
+			<StackPanel Spacing="10" Margin="0,15,0,0">
+				<TextBox x:Name="UsernameTextBox" Text="{Binding UserNameText}"  Watermark="Username"/>
+				<TextBlock x:Name="UserNameValidation"
+				  Foreground="Red"
+				  FontSize="13" />
+				<MaskedTextBox HidePromptOnLeave="True" PromptChar="X" Mask="AAAA-AAAA-AAAA-AAAA" Watermark="Key"/>
+				<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
 
-				<Button Content="Connect"/>
-				<Button Content="Popout Board"/>
+					<Button Content="Connect"/>
+					<Button Content="Popout Board" Command="{Binding PopoutBoardCommand}"/>
+				</StackPanel>
+
 			</StackPanel>
 
-		</StackPanel>
 
-
-		<local:BingoFieldView  Grid.Column="1" DataContext="{Binding BingoField}"/>
-	</Grid>
-
+			<local:BingoFieldView  Grid.Column="1" DataContext="{Binding BingoField}"/>
+		</Grid>
+	</DockPanel>
 </Window>

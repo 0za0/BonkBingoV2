@@ -6,8 +6,11 @@
         <local:ViewLocator/>
     </Application.DataTemplates>
 
-    <Application.Styles>
+
+
+	<Application.Styles>
         <FluentTheme Mode="Dark"/>
 		<StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
-    </Application.Styles>
+		<StyleInclude Source="avares://BingoOnline/Styles.axaml"/>
+	</Application.Styles>
 </Application>

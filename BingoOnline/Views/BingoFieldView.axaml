@@ -18,7 +18,7 @@
 		
 		<ItemsControl.ItemTemplate>
 			<DataTemplate>
-				<local:BingoButton DataContext="{Binding}"/>
+				<local:BingoButton DataContext="{Binding }"/>
 			</DataTemplate>
 		</ItemsControl.ItemTemplate>
 	</ItemsControl>

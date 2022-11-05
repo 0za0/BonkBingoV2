@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="125" d:DesignHeight="125"
              x:Class="BingoOnline.Views.BingoButton">
-	<Button VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+	<Button VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Command="{Binding ButtonPress}">
 		<TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
 	</Button>
 </UserControl>
