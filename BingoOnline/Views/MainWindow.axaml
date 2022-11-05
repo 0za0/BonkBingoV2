@@ -33,7 +33,7 @@
 				<MaskedTextBox HidePromptOnLeave="True" PromptChar="X" Mask="AAAA-AAAA-AAAA-AAAA" Watermark="Key"/>
 				<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
 
-					<Button Content="Connect"/>
+					<Button Content="Connect"  Command="{Binding ConnectCommand}"/>
 					<Button Content="Popout Board" Command="{Binding PopoutBoardCommand}"/>
 				</StackPanel>
 

@@ -1,4 +1,7 @@
-﻿using BingoOnline.Models;
+﻿using Avalonia.Media;
+using Avalonia.Themes.Fluent;
+using Avalonia.Themes.Fluent.Controls;
+using BingoOnline.Models;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -14,14 +17,25 @@ namespace BingoOnline.ViewModels
     public class BingoButtonViewModel : ViewModelBase
     {
         readonly BingoButtonModel _button;
-        public string Text {
+        private IBrush _buttonColor;
+
+        public IBrush ButtonColor
+        {
+            get => _buttonColor;
+            set => this.RaiseAndSetIfChanged(ref _buttonColor, value);
+        }
+
+
+        public string Text
+        {
             get => _button.Text;
-            set {
+            set
+            {
                 _button.Text = value;
                 this.RaisePropertyChanged("Text");
             }
         }
-      
+
         public ICommand ButtonPress { get; }
 
         public BingoButtonViewModel(BingoButtonModel button)
@@ -29,11 +43,12 @@ namespace BingoOnline.ViewModels
             Debug.WriteLine("Hello?");
 
             _button = button;
-          //  Text = $"Button - {_button.Number}";
+            //  Text = $"Button - {_button.Number}";
             ButtonPress = ReactiveCommand.Create(() =>
             {
                 _button?.ClickButton();
-                Text = _button!.IsPressed? $"Pressed":"Not Pressed";
+                Text = _button!.IsPressed ? $"Pressed" : "Not Pressed";
+                ButtonColor = _button!.IsPressed ? Brushes.DarkGreen: Brushes.Black;
             });
         }
     }
