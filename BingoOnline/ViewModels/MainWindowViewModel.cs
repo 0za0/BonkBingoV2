@@ -48,6 +48,12 @@ namespace BingoOnline.ViewModels
             this.ValidationRule(viewModel => viewModel.UserNameText, name => !string.IsNullOrWhiteSpace(name), "Name shouldn't be null or white space.");
             this.ValidationRule(viewModel => viewModel.UserNameText, name => name.All(char.IsLetterOrDigit), "Don't use special characters, Fuckhead.");
 
+            this.ValidationRule(viewModel => viewModel.UserNameText, name =>
+            !(name.Equals("null", StringComparison.InvariantCultureIgnoreCase) || name.Equals("undefined", StringComparison.InvariantCultureIgnoreCase)),
+             "I know where you live.");
+#if !DEBUG
+            this.ValidationRule(viewModel => viewModel.UserNameText, name => !name.Equals("Nullpo", StringComparison.InvariantCultureIgnoreCase), "Reserved.");
+#endif
             //Dialogs
             ShowAboutDialog = new Interaction<AboutViewModel, Unit?>();
             ShowSettingsDialog = new Interaction<SettingsViewModel, Unit?>();

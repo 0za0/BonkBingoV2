@@ -16,10 +16,8 @@ namespace BingoOnline.ViewModels
             for (int i = 0; i < 25; i++)
             {
                 var b = new BingoButtonViewModel(new BingoButtonModel(i));
-                //b.ButtonPress.Execute(() => { });
                 Buttons.Add(b);
             }
-                
         }
         public ObservableCollection<BingoButtonViewModel> Buttons { get; set; }
         public BingoFieldViewModel()

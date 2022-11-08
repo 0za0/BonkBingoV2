@@ -12,7 +12,6 @@
 		WindowStartupLocation="CenterOwner"
 		Classes="tool_window"
 		>
-
 	<Panel>
 		<ExperimentalAcrylicBorder IsHitTestVisible="False">
 			<ExperimentalAcrylicBorder.Material>
@@ -20,7 +19,7 @@
                     BackgroundSource="None"
                     TintColor="Black"
                     TintOpacity="1"
-                    MaterialOpacity="0.65" />
+                    MaterialOpacity="1" />
 			</ExperimentalAcrylicBorder.Material>
 		</ExperimentalAcrylicBorder>
 

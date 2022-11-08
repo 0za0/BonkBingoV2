@@ -12,33 +12,46 @@
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
-	<DockPanel>
-		<Menu DockPanel.Dock="Top">
-			<MenuItem Header="_About" Command="{Binding AboutCommand}">
-			</MenuItem>
-			<MenuItem Header="_Settings" Command="{Binding SettingsCommand}">
-			</MenuItem>
-		</Menu>
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="250"/>
-				<ColumnDefinition Width="*"/>
-			</Grid.ColumnDefinitions>
+	<Panel>
+		<ExperimentalAcrylicBorder IsHitTestVisible="False">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+                    BackgroundSource="None"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="1" />
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>
 
-			<StackPanel Spacing="10" Margin="0,15,0,0">
-				<TextBox x:Name="UsernameTextBox" Text="{Binding UserNameText}"  Watermark="Username"/>
-				<TextBlock x:Name="UserNameValidation" Foreground="Red" FontSize="13" Margin="5,0,0,0"/>
-				<MaskedTextBox HidePromptOnLeave="True" PromptChar="X" Mask="AAAA-AAAA-AAAA-AAAA" Watermark="Key"/>
-				<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
 
-					<Button Content="Connect"  Command="{Binding ConnectCommand}"/>
-					<Button Content="Popout Board" Command="{Binding PopoutBoardCommand}"/>
+		<DockPanel>
+			<Menu DockPanel.Dock="Top">
+				<MenuItem Header="_About" Command="{Binding AboutCommand}">
+				</MenuItem>
+				<MenuItem Header="_Settings" Command="{Binding SettingsCommand}">
+				</MenuItem>
+			</Menu>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="250"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+
+				<StackPanel Spacing="10" Margin="0,15,0,0">
+					<TextBox x:Name="UsernameTextBox" Text="{Binding UserNameText}"  Watermark="Username"/>
+					<TextBlock x:Name="UserNameValidation" Foreground="Red" FontSize="13" Margin="5,0,0,0"/>
+					<MaskedTextBox HidePromptOnLeave="True" PromptChar="X" Mask="AAAA-AAAA-AAAA-AAAA" Watermark="Key"/>
+					<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
+
+						<Button Content="Connect"  Command="{Binding ConnectCommand}"/>
+						<Button Content="Popout Board" Command="{Binding PopoutBoardCommand}"/>
+					</StackPanel>
+
 				</StackPanel>
 
-			</StackPanel>
 
-
-			<local:BingoFieldView  Grid.Column="1" DataContext="{Binding BingoField}"/>
-		</Grid>
-	</DockPanel>
+				<local:BingoFieldView  Grid.Column="1" DataContext="{Binding BingoField}"/>
+			</Grid>
+		</DockPanel>
+	</Panel>
 </Window>
