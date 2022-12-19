@@ -1,4 +1,5 @@
-﻿using BingoOnline.Models;
+﻿using BingoOnline.Interfaces;
+using BingoOnline.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,7 +21,7 @@ namespace BingoOnline.ViewModels
             }
         }
         public ObservableCollection<BingoButtonViewModel> Buttons { get; set; }
-        public BingoFieldViewModel()
+        public BingoFieldViewModel(ISettings settings, INetworkService networkService)
         {
             Buttons = new();
             GenerateButtons();

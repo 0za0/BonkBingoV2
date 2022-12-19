@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BingoOnline.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace BingoOnline.ViewModels
 {
     public class SettingsViewModel : ViewModelBase
     {
-        public SettingsViewModel()
+        public SettingsViewModel(ISettings settings)
         {
             Debug.WriteLine("SettingsViewModel Initialized");
         }

@@ -11,19 +11,26 @@ using ReactiveUI.Validation.Extensions;
 using System.Windows.Input;
 using ReactiveUI.Validation.Abstractions;
 using ReactiveUI.Validation.Contexts;
+using BingoOnline.Models;
+using Splat;
+using Microsoft.Extensions.DependencyInjection;
+using BingoOnline.Interfaces;
+using BingoOnline.Services;
 
 namespace BingoOnline.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase, IValidatableViewModel
     {
 
-        #region Properties and Fields
+        #region Properties / Members and such
         private string _userNameText = "";
         public string UserNameText
         {
             get => _userNameText;
             set => this.RaiseAndSetIfChanged(ref _userNameText, value);
         }
+
+        private INetworkService _networkService;
 
         //Additional ViewModels
         public BingoFieldViewModel BingoField { get; set; }
@@ -44,23 +51,46 @@ namespace BingoOnline.ViewModels
         #region Constructors
         public MainWindowViewModel()
         {
+            #region Shady DI Container
+            var sc = new ServiceCollection();
+            sc.AddSingleton<ISettings, Settings>()
+                .AddSingleton<INetworkService, NetworkService>()
+                .AddSingleton<BingoFieldViewModel>()
+                .AddScoped<SettingsViewModel>()
+                .AddSingleton<PopoutBoardWindow>();
+
+            ServiceProvider sp = sc.BuildServiceProvider(new ServiceProviderOptions
+            {
+                ValidateOnBuild = true
+            });
+            _networkService = sp.GetRequiredService<INetworkService>();
+            #endregion
+
+            #region Validation Rules
             //Validation Rules for Inputs
             this.ValidationRule(viewModel => viewModel.UserNameText, name => !string.IsNullOrWhiteSpace(name), "Name shouldn't be null or white space.");
-            this.ValidationRule(viewModel => viewModel.UserNameText, name => name.All(char.IsLetterOrDigit), "Don't use special characters, Fuckhead.");
+            this.ValidationRule(viewModel => viewModel.UserNameText, name => name!.All(char.IsLetterOrDigit), "Don't use special characters, Fuckhead.");
 
             this.ValidationRule(viewModel => viewModel.UserNameText, name =>
-            !(name.Equals("null", StringComparison.InvariantCultureIgnoreCase) || name.Equals("undefined", StringComparison.InvariantCultureIgnoreCase)),
+            !(name!.Equals("null", StringComparison.InvariantCultureIgnoreCase) || name.Equals("undefined", StringComparison.InvariantCultureIgnoreCase)),
              "I know where you live.");
 #if !DEBUG
             this.ValidationRule(viewModel => viewModel.UserNameText, name => !name.Equals("Nullpo", StringComparison.InvariantCultureIgnoreCase), "Reserved.");
 #endif
+            #endregion
+
+            #region Dialogs
             //Dialogs
             ShowAboutDialog = new Interaction<AboutViewModel, Unit?>();
             ShowSettingsDialog = new Interaction<SettingsViewModel, Unit?>();
+            #endregion
 
+            #region Additional ViewModels
             //Additional ViewModels
-            BingoField = new BingoFieldViewModel();
+            BingoField = sp.GetRequiredService<BingoFieldViewModel>();
+            #endregion
 
+            #region Commands
             //Commands
             AboutCommand = ReactiveCommand.Create(async () =>
             {
@@ -71,16 +101,17 @@ namespace BingoOnline.ViewModels
             SettingsCommand = ReactiveCommand.Create(async () =>
             {
                 Debug.WriteLine("Settings Menu Opened");
-                var settings = new SettingsViewModel();
+                var settings = sp.GetRequiredService<SettingsViewModel>();
                 await ShowSettingsDialog.Handle(settings);
             });
             PopoutBoardCommand = ReactiveCommand.Create(() =>
             {
-                PopoutBoardWindow popoutBoardWindow = new PopoutBoardWindow();
-                popoutBoardWindow.DataContext = BingoField;
+                PopoutBoardWindow popoutBoardWindow = sp.GetRequiredService<PopoutBoardWindow>();
                 popoutBoardWindow.Show();
             });
             ConnectCommand = ReactiveCommand.Create(() => { Debug.WriteLine("A"); }, this.IsValid());
+            #endregion
+
         }
         #endregion
 
