@@ -10,3 +10,4 @@
 - Multiplayer supports up to 8 concurrent players
 - New Backend written in C# instead of JavaScript
 - Performance Optimizations 
+- Dark Mode 
