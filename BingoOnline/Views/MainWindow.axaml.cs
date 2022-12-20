@@ -3,6 +3,7 @@ using Avalonia.Controls.Mixins;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
+using BingoOnline.Interfaces;
 using BingoOnline.ViewModels;
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
@@ -31,12 +32,12 @@ namespace BingoOnline.Views
         }
 
 
-        private async Task DoShowSettingsDialogAsync(InteractionContext<SettingsViewModel, Unit?> interaction)
+        private async Task DoShowSettingsDialogAsync(InteractionContext<SettingsViewModel, ISettings?> interaction)
         {
             var dialog = new SettingsWindow();
             dialog.DataContext = interaction.Input;
 
-            var result = await dialog.ShowDialog<Unit>(this);
+            var result = await dialog.ShowDialog<ISettings>(this);
             interaction.SetOutput(result);
         }
 

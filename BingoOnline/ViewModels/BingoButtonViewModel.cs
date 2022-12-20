@@ -40,7 +40,7 @@ namespace BingoOnline.ViewModels
 
         public BingoButtonViewModel(BingoButtonModel button)
         {
-            Debug.WriteLine("Hello?");
+            
 
             _button = button;
             //  Text = $"Button - {_button.Number}";

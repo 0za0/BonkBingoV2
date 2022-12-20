@@ -13,19 +13,21 @@
 
 		<StackPanel Spacing="9.5" Orientation="Horizontal">
 			<Label Content="1P Background Color"/>
-			<colorpicker:ColorButton/>
+			<colorpicker:ColorButton Color="{Binding P1_NonClicked}">
+			</colorpicker:ColorButton>
+
 		</StackPanel>
-		
+
 		<StackPanel Spacing="60" Orientation="Horizontal">
 			<Label Content="1P Font Color"/>
-			<colorpicker:ColorButton/>
+			<colorpicker:ColorButton Color="{Binding ButtonFontColor}"></colorpicker:ColorButton>
 		</StackPanel>
-		
+
 		<StackPanel Spacing="39" Orientation="Horizontal">
 			<Label Content="2P Clicked Color"/>
 			<colorpicker:ColorButton/>
 		</StackPanel>
-		
+
 		<StackPanel Spacing="38" Orientation="Horizontal">
 			<Label Content="3P Clicked Color"/>
 			<colorpicker:ColorButton/>

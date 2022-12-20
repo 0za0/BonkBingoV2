@@ -16,6 +16,7 @@ using Splat;
 using Microsoft.Extensions.DependencyInjection;
 using BingoOnline.Interfaces;
 using BingoOnline.Services;
+using Avalonia.Media;
 
 namespace BingoOnline.ViewModels
 {
@@ -44,7 +45,7 @@ namespace BingoOnline.ViewModels
 
         //ReactiveUI Stuff
         public Interaction<AboutViewModel, Unit?> ShowAboutDialog { get; }
-        public Interaction<SettingsViewModel, Unit?> ShowSettingsDialog { get; }
+        public Interaction<SettingsViewModel, ISettings?> ShowSettingsDialog { get; }
         public ValidationContext ValidationContext { get; } = new ValidationContext();
         #endregion
 
@@ -65,15 +66,15 @@ namespace BingoOnline.ViewModels
             });
             _networkService = sp.GetRequiredService<INetworkService>();
             #endregion
-
+            
             #region Validation Rules
             //Validation Rules for Inputs
             this.ValidationRule(viewModel => viewModel.UserNameText, name => !string.IsNullOrWhiteSpace(name), "Name shouldn't be null or white space.");
-            this.ValidationRule(viewModel => viewModel.UserNameText, name => name!.All(char.IsLetterOrDigit), "Don't use special characters, Fuckhead.");
+            this.ValidationRule(viewModel => viewModel.UserNameText, name => name!.All(char.IsLetterOrDigit), "Don't use special characters.");
 
             this.ValidationRule(viewModel => viewModel.UserNameText, name =>
             !(name!.Equals("null", StringComparison.InvariantCultureIgnoreCase) || name.Equals("undefined", StringComparison.InvariantCultureIgnoreCase)),
-             "I know where you live.");
+             "Very funny, but no.");
 #if !DEBUG
             this.ValidationRule(viewModel => viewModel.UserNameText, name => !name.Equals("Nullpo", StringComparison.InvariantCultureIgnoreCase), "Reserved.");
 #endif
@@ -82,7 +83,7 @@ namespace BingoOnline.ViewModels
             #region Dialogs
             //Dialogs
             ShowAboutDialog = new Interaction<AboutViewModel, Unit?>();
-            ShowSettingsDialog = new Interaction<SettingsViewModel, Unit?>();
+            ShowSettingsDialog = new Interaction<SettingsViewModel, ISettings?>();
             #endregion
 
             #region Additional ViewModels

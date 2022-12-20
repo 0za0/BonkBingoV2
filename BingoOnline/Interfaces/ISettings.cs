@@ -5,12 +5,12 @@ namespace BingoOnline.Interfaces
 {
     public interface ISettings
     {
-        Color ButtonFontColor { get; }
-        Color P1_Clicked { get; }
-        Color P1_NonClicked { get; }
-        Color P2_Clicked { get; }
+        Color ButtonFontColor { get; set; }
+        Color P1_Clicked { get; set; }
+        Color P1_NonClicked { get; set; }
+        Color P2_Clicked { get; set; }
 
-        Task LoadSettings();
-        Task SaveSettings();
+        void LoadSettings();
+        void SaveSettings();
     }
 }

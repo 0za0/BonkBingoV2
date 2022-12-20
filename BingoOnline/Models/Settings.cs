@@ -12,25 +12,31 @@ using System.Threading.Tasks;
 namespace BingoOnline.Models
 {
     //User DI for this
+    [Serializable]
     public class Settings : ISettings
     {
-        public readonly string SettingsPath = Path.Combine(Directory.GetCurrentDirectory(), ".config");
-        public Color P1_Clicked { get; private set; }
-        public Color P1_NonClicked { get; private set; }
-        public Color ButtonFontColor { get; private set; }
-        public Color P2_Clicked { get; private set; }
+        public readonly string SettingsPath = Path.Combine(Directory.GetCurrentDirectory(), "s.config");
+        public Color P1_Clicked { get; set; }
+        public Color P1_NonClicked { get; set; }
+        public Color ButtonFontColor { get; set; }
+        public Color P2_Clicked { get; set; }
 
-        public async Task LoadSettings()
+        public Settings()
         {
-            Debug.WriteLine("Settings Loaded!");
-           await File.ReadAllLinesAsync(SettingsPath);
+            ButtonFontColor = Color.FromArgb(255,0,255,0);
         }
 
-        public async Task SaveSettings()
+        public void LoadSettings()
+        {
+            Debug.WriteLine("Settings Loaded!");
+            File.ReadAllLinesAsync(SettingsPath);
+        }
+
+        public void SaveSettings()
         {
             using FileStream createStream = File.Create(SettingsPath);
-            await JsonSerializer.SerializeAsync(createStream, this);
-            await createStream.DisposeAsync();
+            JsonSerializer.Serialize(createStream, this);
+            createStream.DisposeAsync();
         }
     }
 }
