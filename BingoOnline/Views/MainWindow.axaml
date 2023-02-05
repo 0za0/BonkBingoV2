@@ -40,7 +40,7 @@
 				<StackPanel Spacing="10" Margin="0,15,0,0">
 					<TextBox x:Name="UsernameTextBox" Text="{Binding UserNameText}"  Watermark="Username"/>
 					<TextBlock x:Name="UserNameValidation" Foreground="Red" FontSize="13" Margin="5,0,0,0"/>
-					<MaskedTextBox HidePromptOnLeave="True" PromptChar="X" Mask="AAAA-AAAA-AAAA-AAAA" Watermark="Key"/>
+					<MaskedTextBox Text="{Binding KeyText}" HidePromptOnLeave="True" PromptChar="X" Mask="AAAA-AAAA-AAAA-AAAA" Watermark="Key"/>
 					<StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="10">
 
 						<Button Content="Connect"  Command="{Binding ConnectCommand}"/>

@@ -1,10 +1,14 @@
-﻿namespace BingoOnline.Interfaces
+﻿using System;
+using System.Threading.Tasks;
+
+namespace BingoOnline.Interfaces
 {
     public interface INetworkService
     {
-        void RegisterPlayer(string key, string username);
-        void SendKey(int index);
-        void SendBitmap(byte[] buffer);
-        void SendConfig();
+        bool IsRegistered { get; set; }
+        Task RegisterPlayer(string key, string username);
+        Task SendKey(int index);
+        Task SendBitmap(byte[] buffer);
+        Task SendConfig();
     }
 }

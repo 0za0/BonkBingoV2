@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using BingoOnline.Interfaces;
 using BingoOnline.Services;
 using Avalonia.Media;
+using Avalonia.Controls;
 
 namespace BingoOnline.ViewModels
 {
@@ -24,6 +25,17 @@ namespace BingoOnline.ViewModels
     {
 
         #region Properties / Members and such
+
+        public bool IsRegistered
+        {
+            get => _networkService.IsRegistered;
+            set
+            {
+                _networkService.IsRegistered = value;
+                this.RaisePropertyChanged("IsRegistered");
+            }
+        }
+
         private string _userNameText = "";
         public string UserNameText
         {
@@ -31,7 +43,14 @@ namespace BingoOnline.ViewModels
             set => this.RaiseAndSetIfChanged(ref _userNameText, value);
         }
 
-        private INetworkService _networkService;
+        private string _keyText = "";
+        public string KeyText
+        {
+            get => _keyText;
+            set => this.RaiseAndSetIfChanged(ref _keyText, value);
+        }
+
+        private readonly INetworkService _networkService;
 
         //Additional ViewModels
         public BingoFieldViewModel BingoField { get; set; }
@@ -66,9 +85,10 @@ namespace BingoOnline.ViewModels
             });
             _networkService = sp.GetRequiredService<INetworkService>();
             #endregion
-            
+
             #region Validation Rules
             //Validation Rules for Inputs
+
             this.ValidationRule(viewModel => viewModel.UserNameText, name => !string.IsNullOrWhiteSpace(name), "Name shouldn't be null or white space.");
             this.ValidationRule(viewModel => viewModel.UserNameText, name => name!.All(char.IsLetterOrDigit), "Don't use special characters.");
 
@@ -110,7 +130,15 @@ namespace BingoOnline.ViewModels
                 PopoutBoardWindow popoutBoardWindow = sp.GetRequiredService<PopoutBoardWindow>();
                 popoutBoardWindow.Show();
             });
-            ConnectCommand = ReactiveCommand.Create(() => { Debug.WriteLine("A"); }, this.IsValid());
+            //What
+            var canExecute = this.WhenAnyValue(x => x.IsRegistered, y => y == false);
+
+            ConnectCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                await _networkService.RegisterPlayer(KeyText, UserNameText);
+                IsRegistered = true; //Pretty sure there is a better way of doing this
+            },
+             Observable.CombineLatest(canExecute, this.IsValid(), (a, b) => a && b));
             #endregion
 
         }
