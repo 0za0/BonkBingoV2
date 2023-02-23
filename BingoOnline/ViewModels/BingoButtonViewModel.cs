@@ -16,7 +16,7 @@ namespace BingoOnline.ViewModels
 {
     public class BingoButtonViewModel : ViewModelBase
     {
-        readonly BingoButtonModel _button;
+        public readonly BingoButtonModel _button;
         private IBrush _buttonColor;
 
         public IBrush ButtonColor
@@ -36,7 +36,7 @@ namespace BingoOnline.ViewModels
             }
         }
 
-        public ICommand ButtonPress { get; }
+        public ICommand ButtonPress { get; set; }
 
         public BingoButtonViewModel(BingoButtonModel button)
         {
@@ -44,12 +44,12 @@ namespace BingoOnline.ViewModels
 
             _button = button;
             //  Text = $"Button - {_button.Number}";
-            ButtonPress = ReactiveCommand.Create(() =>
-            {
-                _button?.ClickButton();
-                Text = _button!.IsPressed ? $"Pressed" : "Not Pressed";
-                ButtonColor = _button!.IsPressed ? Brushes.DarkGreen: Brushes.Black;
-            });
+            //ButtonPress = ReactiveCommand.Create(() =>
+            //{
+            //    _button?.ClickButton();
+            //    Text = _button!.IsPressed ? $"Pressed" : "Not Pressed";
+            //    ButtonColor = _button!.IsPressed ? Brushes.DarkGreen: Brushes.Black;
+            //});
         }
     }
 }

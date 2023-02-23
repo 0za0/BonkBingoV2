@@ -18,6 +18,8 @@ using BingoOnline.Interfaces;
 using BingoOnline.Services;
 using Avalonia.Media;
 using Avalonia.Controls;
+using MessageBox.Avalonia.DTO;
+using NLog;
 
 namespace BingoOnline.ViewModels
 {
@@ -71,6 +73,14 @@ namespace BingoOnline.ViewModels
         #region Constructors
         public MainWindowViewModel()
         {
+            //Logger Init   
+
+            //TODO: Setup XML based Config for archiving old files 
+            NLog.LogManager.Setup().LoadConfiguration(builder => {
+                builder.ForLogger().FilterMinLevel(NLog.LogLevel.Debug).WriteToConsole();
+                builder.ForLogger().FilterMinLevel(NLog.LogLevel.Debug).WriteToFile(fileName: "Log.fuck");
+            });
+
             #region Shady DI Container
             var sc = new ServiceCollection();
             sc.AddSingleton<ISettings, Settings>()
@@ -84,6 +94,9 @@ namespace BingoOnline.ViewModels
                 ValidateOnBuild = true
             });
             _networkService = sp.GetRequiredService<INetworkService>();
+
+
+            
             #endregion
 
             #region Validation Rules
@@ -109,6 +122,7 @@ namespace BingoOnline.ViewModels
             #region Additional ViewModels
             //Additional ViewModels
             BingoField = sp.GetRequiredService<BingoFieldViewModel>();
+
             #endregion
 
             #region Commands
@@ -128,15 +142,37 @@ namespace BingoOnline.ViewModels
             PopoutBoardCommand = ReactiveCommand.Create(() =>
             {
                 PopoutBoardWindow popoutBoardWindow = sp.GetRequiredService<PopoutBoardWindow>();
+                popoutBoardWindow.Closing += (s, e) =>
+                {
+                    if (s != null) //Only did this to get rid of the warning
+                    {
+                        ((Window)s).Hide();
+                        e.Cancel = true;
+                    }
+                };
                 popoutBoardWindow.Show();
             });
-            //What
+            //What The Fuck
             var canExecute = this.WhenAnyValue(x => x.IsRegistered, y => y == false);
 
             ConnectCommand = ReactiveCommand.CreateFromTask(async () =>
             {
-                await _networkService.RegisterPlayer(KeyText, UserNameText);
-                IsRegistered = true; //Pretty sure there is a better way of doing this
+                StatusError success = await _networkService.RegisterPlayer(KeyText, UserNameText);
+                if (success.Success)
+                    IsRegistered = true; //Pretty sure there is a better way of doing this
+                else
+                {
+                    var contentMessage = (success.StatusCode != 999) ? success.ErrorMessage : "Server cannot be reached ... It might've exploded or something ... dunno. Contact Nullpo";
+                    var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams
+                    {
+
+                        ButtonDefinitions = MessageBox.Avalonia.Enums.ButtonEnum.Ok,
+                        ContentTitle = $"What? Error: {success.StatusCode}",
+                        ContentMessage = contentMessage,
+                    });
+                    await messageBoxStandardWindow.Show();
+                }
+
             },
              Observable.CombineLatest(canExecute, this.IsValid(), (a, b) => a && b));
             #endregion

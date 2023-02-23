@@ -12,7 +12,7 @@ namespace BingoOnline.Views
         }
         public PopoutBoardWindow()
         {
-
+           
         }
     }
 }

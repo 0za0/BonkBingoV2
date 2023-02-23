@@ -5,6 +5,7 @@ using BingoOnline.Interfaces;
 using BingoOnline.Models;
 using BingoOnline.ViewModels;
 using BingoOnline.Views;
+using NLog;
 using Splat;
 
 namespace BingoOnline
@@ -27,6 +28,9 @@ namespace BingoOnline
             }
 
             base.OnFrameworkInitializationCompleted();
+
+
+            
         }
     }
 }

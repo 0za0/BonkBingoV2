@@ -19,7 +19,6 @@ namespace BingoOnline.Models
         public Color P1_Clicked { get; set; }
         public Color P1_NonClicked { get; set; }
         public Color ButtonFontColor { get; set; }
-        public Color P2_Clicked { get; set; }
 
         public Settings()
         {

@@ -8,6 +8,7 @@ using BingoOnline.ViewModels;
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reactive;
 using System.Text.RegularExpressions;
@@ -18,6 +19,7 @@ namespace BingoOnline.Views
 {
     public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         public MainWindow()
         {
             InitializeComponent();
@@ -26,10 +28,17 @@ namespace BingoOnline.Views
                 d(ViewModel!.ShowAboutDialog.RegisterHandler(DoShowAboutDialogAsync));
                 d(ViewModel!.ShowSettingsDialog.RegisterHandler(DoShowSettingsDialogAsync));
                 d(this.BindValidation(ViewModel, x => x.UserNameText, x => x.UserNameValidation.Text));
-            });
 
+            });
+            //Kill the Logger
+            Closing += (s, e) =>
+            {
+                logger.Info("Thank you, goodbye.");
+                NLog.LogManager.Shutdown();
+            };
 
         }
+
 
 
         private async Task DoShowSettingsDialogAsync(InteractionContext<SettingsViewModel, ISettings?> interaction)
