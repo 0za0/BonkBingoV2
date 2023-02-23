@@ -1,5 +1,6 @@
 ﻿using Avalonia.Media;
 using BingoOnline.Interfaces;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,6 +16,8 @@ namespace BingoOnline.Models
     [Serializable]
     public class Settings : ISettings
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public readonly string SettingsPath = Path.Combine(Directory.GetCurrentDirectory(), "s.config");
         public Color P1_Clicked { get; set; }
         public Color P1_NonClicked { get; set; }
@@ -22,20 +25,45 @@ namespace BingoOnline.Models
 
         public Settings()
         {
-            ButtonFontColor = Color.FromArgb(255,0,255,0);
         }
-
+        public Settings(Color p1, Color p1n, Color font)
+        {
+            P1_Clicked = p1;
+            P1_NonClicked = p1n;
+            ButtonFontColor = font;
+        }
         public void LoadSettings()
         {
-            Debug.WriteLine("Settings Loaded!");
-            File.ReadAllLinesAsync(SettingsPath);
+            if (File.Exists(SettingsPath))
+            {
+
+                logger.Info("Loading Settings from {0}", SettingsPath);
+                var allLines = File.ReadAllLines(SettingsPath);
+                var settings = JsonSerializer.Deserialize<Settings>(string.Join("", allLines));
+                if (settings != null)
+                {
+                    this.P1_Clicked = settings.P1_Clicked;
+                    this.P1_NonClicked = settings.P1_NonClicked;
+                    this.ButtonFontColor = settings.ButtonFontColor;
+                }
+            }
         }
+
 
         public void SaveSettings()
         {
-            using FileStream createStream = File.Create(SettingsPath);
-            JsonSerializer.Serialize(createStream, this);
-            createStream.DisposeAsync();
+            if (!File.Exists(SettingsPath))
+            {
+                using FileStream createStream = File.Create(SettingsPath);
+                JsonSerializer.Serialize(createStream, this);
+                createStream.DisposeAsync();
+            }
+            else
+            {
+                using FileStream createStream = File.Open(SettingsPath, FileMode.Open);
+                JsonSerializer.Serialize(createStream, this);
+                createStream.DisposeAsync();
+            }
         }
     }
 }

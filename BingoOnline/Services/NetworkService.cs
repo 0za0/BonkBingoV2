@@ -51,7 +51,7 @@ namespace BingoOnline.Services
 
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri(_baseurl);
-            _httpClient.Timeout = new TimeSpan(0, 0, 1);
+            _httpClient.Timeout = new TimeSpan(0, 0, 4);
         }
         //TODO: PARSE RESP
 

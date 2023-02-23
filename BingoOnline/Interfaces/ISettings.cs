@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media;
+using NLog;
 using System.Threading.Tasks;
 
 namespace BingoOnline.Interfaces
@@ -8,7 +9,7 @@ namespace BingoOnline.Interfaces
         Color ButtonFontColor { get; set; }
         Color P1_Clicked { get; set; }
         Color P1_NonClicked { get; set; }
-
+       
         void LoadSettings();
         void SaveSettings();
     }

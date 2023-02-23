@@ -8,13 +8,21 @@ using System;
 
 namespace BingoOnline.Views
 {
-    public partial class SettingsWindow : ReactiveWindow<SettingsViewModel> 
+    public partial class SettingsWindow : ReactiveWindow<SettingsViewModel>
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public SettingsWindow()
         {
             InitializeComponent();
+            Closing += (s, e) =>
+            {
+                logger.Info("Settings Window Closing. Saving Settings...");
+                ViewModel!.Save();
+            };
+
         }
 
-       
+
     }
 }

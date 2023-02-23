@@ -4,23 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="280" d:DesignHeight="450"
              x:Class="BingoOnline.Views.SettingsView"
-			 xmlns:colorpicker="clr-namespace:AvaloniaColorPicker;assembly=AvaloniaColorPicker">
+			  xmlns:colorpicker="clr-namespace:AvaloniaColorPicker;assembly=AvaloniaColorPicker"
+			 >
+
 	<StackPanel Spacing="10" Margin="30,30,0,0">
 		<StackPanel Spacing="41" Orientation="Horizontal">
 			<Label Content="1P Clicked Color"/>
-			<colorpicker:ColorButton/>
+			<!--<colorpicker:ColorButton  ></colorpicker:ColorButton>-->
+			<StackPanel Spacing="1" Orientation="Horizontal">
+
+			</StackPanel>
 		</StackPanel>
 
 		<StackPanel Spacing="9.5" Orientation="Horizontal">
 			<Label Content="1P Background Color"/>
-			<colorpicker:ColorButton Color="{Binding P1_NonClicked}">
-			</colorpicker:ColorButton>
+			<!--<colorpicker:ColorButton  ></colorpicker:ColorButton>-->
 
 		</StackPanel>
 
 		<StackPanel Spacing="60" Orientation="Horizontal">
 			<Label Content="1P Font Color"/>
-			<colorpicker:ColorButton Color="{Binding ButtonFontColor}"></colorpicker:ColorButton>
+			<colorpicker:ColorButton  Name="colorButton" Color="{Binding ButtonFontColor}" ></colorpicker:ColorButton>
+		
 		</StackPanel>
 
 	</StackPanel>

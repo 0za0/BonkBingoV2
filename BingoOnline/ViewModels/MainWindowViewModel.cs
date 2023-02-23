@@ -94,7 +94,9 @@ namespace BingoOnline.ViewModels
                 ValidateOnBuild = true
             });
             _networkService = sp.GetRequiredService<INetworkService>();
-
+            
+            //LOAD SETTINGS
+            sp.GetRequiredService<ISettings>().LoadSettings();
 
             
             #endregion
