@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Mixins;
 using Avalonia.Input;
@@ -33,13 +34,13 @@ namespace BingoOnline.Views
             //Kill the Logger
             Closing += (s, e) =>
             {
+
                 logger.Info("Thank you, goodbye.");
                 NLog.LogManager.Shutdown();
+                
             };
 
         }
-
-
 
         private async Task DoShowSettingsDialogAsync(InteractionContext<SettingsViewModel, ISettings?> interaction)
         {

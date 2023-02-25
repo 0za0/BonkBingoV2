@@ -18,7 +18,7 @@ namespace BingoOnline.ViewModels
 {
     public class BingoFieldViewModel : ViewModelBase
     {
-        private void GenerateButtons(INetworkService ns)
+        private void GenerateButtons(INetworkService ns, ISettings settings)
         {
             for (int i = 0; i < 25; i++)
             {
@@ -27,7 +27,7 @@ namespace BingoOnline.ViewModels
                 {
                     b._button?.ClickButton();
                     b.Text = b._button!.IsPressed ? $"Pressed" : "Not Pressed";
-                    b.ButtonColor = b._button!.IsPressed ? Brushes.DarkGreen : Brushes.Black;
+                    b.ButtonColor = b._button!.IsPressed ? new SolidColorBrush(settings.P1_Clicked) : new SolidColorBrush(settings.P1_NonClicked);
                     if (ns.IsRegistered)
                         await ns.SendKey(b._button.Number, b._button.IsPressed);
                 });
@@ -36,13 +36,28 @@ namespace BingoOnline.ViewModels
             }
         }
 
+        internal void UpdateColors()
+        {
+            var fontBrush = new SolidColorBrush(_settings.ButtonFontColor);
+            var pressedBrush = new SolidColorBrush(_settings.P1_Clicked);
+            var bgBrush = new SolidColorBrush(_settings.P1_NonClicked);
+            foreach (var item in Buttons)
+            {
+                item.ButtonFontColor = fontBrush;
 
+                if (item._button.IsPressed)
+                    item.ButtonColor = pressedBrush;
+                else
+                    item.ButtonColor = bgBrush;
+            }
+        }
+        private readonly ISettings _settings;
         public ObservableCollection<BingoButtonViewModel> Buttons { get; set; }
         public BingoFieldViewModel(ISettings settings, INetworkService networkService)
         {
             Buttons = new();
-
-            GenerateButtons(networkService);
+            _settings = settings;
+            GenerateButtons(networkService, settings);
         }
 
 

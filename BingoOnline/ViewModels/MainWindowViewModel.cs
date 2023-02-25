@@ -139,7 +139,10 @@ namespace BingoOnline.ViewModels
             {
                 Debug.WriteLine("Settings Menu Opened");
                 var settings = sp.GetRequiredService<SettingsViewModel>();
-                await ShowSettingsDialog.Handle(settings);
+                var newSettings = await ShowSettingsDialog.Handle(settings);
+                
+                //Update Colors
+                BingoField.UpdateColors();
             });
             PopoutBoardCommand = ReactiveCommand.Create(() =>
             {

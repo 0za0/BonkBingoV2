@@ -17,13 +17,28 @@ namespace BingoOnline.ViewModels
     public class BingoButtonViewModel : ViewModelBase
     {
         public readonly BingoButtonModel _button;
-        private IBrush _buttonColor;
 
+        private IBrush _buttonColor;
         public IBrush ButtonColor
         {
             get => _buttonColor;
             set => this.RaiseAndSetIfChanged(ref _buttonColor, value);
         }
+
+        private IBrush _buttonFontColor;
+        public IBrush ButtonFontColor
+        {
+            get => _buttonFontColor;
+            set => this.RaiseAndSetIfChanged(ref _buttonFontColor, value);
+        }
+
+        private IBrush _buttonBackGroundColor;
+        public IBrush ButtonBackGroundColor
+        {
+            get => _buttonBackGroundColor;
+            set => this.RaiseAndSetIfChanged(ref _buttonBackGroundColor, value);
+        }
+
 
 
         public string Text
