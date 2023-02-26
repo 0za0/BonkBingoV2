@@ -88,7 +88,7 @@ namespace BingoOnline.ViewModels
             var ft = new FileTarget
             {
                 FileName = "Matoro.death",
-                Layout = "${date}|${level:uppercase=true}|${message} ${exception:format=message,StackTrace,Data}",
+                Layout = "${date}|${level:uppercase=true}|${message}|${exception:format=message,StackTrace,Data}",
                 MaxArchiveFiles = 2,
                 ArchiveOldFileOnStartup = true,
                 ArchiveFileName = "MatoroDeath{##}.Archive",
