@@ -20,6 +20,10 @@ using Avalonia.Media;
 using Avalonia.Controls;
 using MessageBox.Avalonia.DTO;
 using NLog;
+using NLog.Config;
+using NLog.Targets;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 
 namespace BingoOnline.ViewModels
 {
@@ -57,6 +61,9 @@ namespace BingoOnline.ViewModels
         //Additional ViewModels
         public BingoFieldViewModel BingoField { get; set; }
 
+        //Additional Windows
+        public PopoutBoardWindow PopoutWindow { get; set; }
+
         //Commands
         public ICommand AboutCommand { get; }
         public ICommand SettingsCommand { get; }
@@ -76,10 +83,22 @@ namespace BingoOnline.ViewModels
             //Logger Init   
 
             //TODO: Setup XML based Config for archiving old files 
-            NLog.LogManager.Setup().LoadConfiguration(builder => {
-                builder.ForLogger().FilterMinLevel(NLog.LogLevel.Debug).WriteToConsole();
-                builder.ForLogger().FilterMinLevel(NLog.LogLevel.Debug).WriteToFile(fileName: "Log.fuck");
-            });
+            var config = new LoggingConfiguration();
+
+            var ft = new FileTarget
+            {
+                FileName = "Matoro.death",
+                Layout = "${date}|${level:uppercase=true}|${message} ${exception:format=message,StackTrace,Data}",
+                MaxArchiveFiles = 2,
+                ArchiveOldFileOnStartup = true,
+                ArchiveFileName = "MatoroDeath{##}.Archive",
+                Name = "FileTarget",
+                ArchiveNumbering = ArchiveNumberingMode.Rolling
+            };
+
+            config.AddTarget(ft);
+            config.LoggingRules.Add(new LoggingRule("*", NLog.LogLevel.Debug, ft));
+            LogManager.Configuration = config;
 
             #region Shady DI Container
             var sc = new ServiceCollection();
@@ -93,12 +112,12 @@ namespace BingoOnline.ViewModels
             {
                 ValidateOnBuild = true
             });
+
+            //Get Reference to NetworkService
             _networkService = sp.GetRequiredService<INetworkService>();
-            
+
             //LOAD SETTINGS
             sp.GetRequiredService<ISettings>().LoadSettings();
-
-            
             #endregion
 
             #region Validation Rules
@@ -121,10 +140,11 @@ namespace BingoOnline.ViewModels
             ShowSettingsDialog = new Interaction<SettingsViewModel, ISettings?>();
             #endregion
 
-            #region Additional ViewModels
+            #region Additional ViewModels and Windows
             //Additional ViewModels
             BingoField = sp.GetRequiredService<BingoFieldViewModel>();
-
+            BingoField.UpdateColors();
+            PopoutWindow = sp.GetRequiredService<PopoutBoardWindow>();
             #endregion
 
             #region Commands
@@ -140,7 +160,7 @@ namespace BingoOnline.ViewModels
                 Debug.WriteLine("Settings Menu Opened");
                 var settings = sp.GetRequiredService<SettingsViewModel>();
                 var newSettings = await ShowSettingsDialog.Handle(settings);
-                
+
                 //Update Colors
                 BingoField.UpdateColors();
             });
@@ -184,6 +204,15 @@ namespace BingoOnline.ViewModels
 
         }
         #endregion
-
+        internal void DestroyPopoutWindow()
+        {
+            PopoutWindow.Closing += (s, e) =>
+            {
+                //Only did this to get rid of the warning
+                if (s != null) 
+                    e.Cancel = false;
+            };
+            PopoutWindow.Close();
+        }
     }
 }

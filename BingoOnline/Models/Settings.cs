@@ -59,7 +59,6 @@ namespace BingoOnline.Models
                     logger.Debug("P1_Clicked is {0}", P1_Clicked);
                     logger.Debug("P1_NonClicked is {0}", P1_NonClicked);
                     logger.Debug("ButtonFontColor is {0}", ButtonFontColor);
-
                 }
             }
         }
@@ -72,6 +71,7 @@ namespace BingoOnline.Models
 
             var options = new JsonSerializerOptions()
             { Converters = { new ColorJsonConverter() } };
+
             using FileStream createStream = File.Create(SettingsPath);
             JsonSerializer.Serialize(createStream, this, options);
             createStream.DisposeAsync();

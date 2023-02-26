@@ -35,9 +35,9 @@ namespace BingoOnline.Views
             Closing += (s, e) =>
             {
 
+                ViewModel!.DestroyPopoutWindow();
                 logger.Info("Thank you, goodbye.");
                 NLog.LogManager.Shutdown();
-                
             };
 
         }
