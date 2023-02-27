@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Reactive.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BingoOnline.Services
@@ -37,7 +38,10 @@ namespace BingoOnline.Services
         public bool IsRegistered { get; set; }
         public User User { get; private set; }
         private HttpClient _httpClient;
-        private string _baseurl;
+        private readonly string _baseurl;
+        private readonly Timer pollConfigTimer;
+
+
         public NetworkService()
         {
             Logger.Info("NetworkService Has been Initialized!");
@@ -98,14 +102,6 @@ namespace BingoOnline.Services
                 Logger.Error(ex, "Ah Crap");
                 status.Success = false;
                 status.StatusCode = 999;
-
-
-                //Logger.Debug("Disposing and re-creating NetworkService!");
-                //For some reason it only worked like this
-                //_httpClient.Dispose();
-                //_httpClient = new HttpClient();
-                //_httpClient.BaseAddress = new Uri(_baseurl);
-
                 return status;
             }
             
@@ -124,17 +120,32 @@ namespace BingoOnline.Services
         //TODO: PARSE RESP
         public async Task SendKey(int number, bool pressed)
         {
-            if (IsRegistered)
+            try
             {
-                var btnState = JsonSerializer.Serialize(new ButtonState(number, pressed));
-                var data = new StringContent(btnState, Encoding.UTF8, "application/json");
-                var resp = await _httpClient.PostAsync("/s", data);
+                if (IsRegistered)
+                {
+                    var btnState = JsonSerializer.Serialize(new ButtonState(number, pressed));
+                    var data = new StringContent(btnState, Encoding.UTF8, "application/json");
+                    var resp = await _httpClient.PostAsync("/s", data);
+                }
             }
+            catch (Exception ex)
+            {
+
+                Logger.Error(ex, "Uh Oh, couldn't send ButtonInfo");
+                
+            }
+            
         }
 
         //Current Idea is to just poll this every 5s or sth
-        public Task<BingoSessionInfo> GetConfig()
+        public async Task<BingoSessionInfo> GetConfig()
         {
+            if (IsRegistered)
+            {
+                var response = await _httpClient.GetAsync("/GetConfig");
+                
+            }
             throw new NotImplementedException();
         }
     }

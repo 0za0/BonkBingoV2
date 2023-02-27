@@ -32,6 +32,7 @@ namespace BingoOnline.ViewModels
 
         #region Properties / Members and such
 
+        
         public bool IsRegistered
         {
             get => _networkService.IsRegistered;
